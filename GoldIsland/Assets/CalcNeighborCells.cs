@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
+using System;
 public class CalcNeighborCells : MonoBehaviour
 {
     [Header("Check Zone")]
@@ -17,8 +18,8 @@ public class CalcNeighborCells : MonoBehaviour
         new Vector3(0,0,-2.5f),
         new Vector3(0,0,2.5f)
     };
-    Collider[] colliders;
-
+    [SerializeField] Collider[] colliders;
+    [SerializeField] Collider[][] colliderss;
     [Space(15f)]
     [Header("Buff")]
     [SerializeField] Cell_SO.CellType checkBuffCellType;
@@ -29,12 +30,12 @@ public class CalcNeighborCells : MonoBehaviour
     [Header("Buff Text")]
     [SerializeField] GameObject bonusTextParent;
     [SerializeField] GameObject bonusTextPrefab;
-    List<ConnectionScreenToWorld> allTexts = new List<ConnectionScreenToWorld>();
+    List<TextCellData> allTexts = new List<TextCellData>();
 
     [Header("Buff Zone")]
     [SerializeField] GameObject bonusZoneParent;
     [SerializeField] GameObject bonusZonePrefab;
-    List<GameObject> allConnection = new List<GameObject>();
+    List<ZoneCellData> allConnection = new List<ZoneCellData>();
 
 
     [Space(15f)]
@@ -47,51 +48,80 @@ public class CalcNeighborCells : MonoBehaviour
         cam = Camera.main;
 
     }
-    [ContextMenu("Reset Values")]
-    void ResetValues()
+    public List<Vector3> FindAllBuffCellsPos(List<Cell> cells)
     {
-        // Логіка для скидання значень
+        List<Vector3> pos = new List<Vector3>();
+        for (int i = 0; i < cells.Count; i++)
+        {
+            if (cells[i].cell_SO.cellTypes == checkBuffCellType)
+            {
+                pos.Add(cells[i].transform.position);
+            }
+            
+        }
+        if (true)
+        {
+            
+        }
+        return pos;
     }
     public void CalcNeighborCell()
     {
-        
+        colliderss = new Collider[8][];
+
+        colliders = new Collider[0];
         for (int i = 0; i < allCheckPos.Length; i++)
         {
             Vector3 position = allCheckPos[i] + transform.position + Vector3.up * (Vector3.one.y / 2);
-            colliders = Physics.OverlapBox(position, Vector3.one / 2, Quaternion.identity, checkLayer);
+            Collider[] cellColliders = Physics.OverlapBox(position, Vector3.one / 2, Quaternion.identity, checkLayer);
+            colliders = colliders.Concat(cellColliders).ToArray();
+
         }
-        List<Cell> cells = new List<Cell>();
+        List<Cell> Cells = new List<Cell>();
         for (int i = 0; i < colliders.Length; i++)
         {
             Cell cell;
             colliders[i].gameObject.TryGetComponent<Cell>(out cell);
-            if (cell != null && cell.cell_SO.cellTypes == checkBuffCellType)
+            if (cell != null && (cell.cell_SO.cellTypes == checkBuffCellType || cell.cell_SO.cellTypes == checkDebuffCellType))
             {
-                cells.Add(cell);
+                Cells.Add(cell);
             }
         }
-
-        while (cells.Count > allTexts.Count)
+        List<Vector3> CellsPos = new List<Vector3>();
+        for (int i = 0; i < Cells.Count; i++)
         {
-            allTexts.Add(Instantiate(bonusTextPrefab, bonusTextParent.transform).GetComponent<ConnectionScreenToWorld>());
-            allConnection.Add(Instantiate(bonusZonePrefab, bonusZoneParent.transform));
+            CellsPos.Add(Cells[i].transform.position);
+        }
+
+
+        while (Cells.Count > allTexts.Count)
+        {
+            allTexts.Add(Instantiate(bonusTextPrefab, bonusTextParent.transform).GetComponent<TextCellData>());
+            allConnection.Add(Instantiate(bonusZonePrefab, bonusZoneParent.transform).GetComponent<ZoneCellData>());
         }
 
         for (int i = 0; i < allTexts.Count; i++)
         {
             allTexts[i].gameObject.SetActive(false);
-            allConnection[i].SetActive(false);
+            allConnection[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < cells.Count; i++)
+        for (int i = 0; i < Cells.Count; i++)
         {
             allTexts[i].gameObject.SetActive(true);
-            allTexts[i].target = cells[i].gameObject;
-            allTexts[i].moveFromCenter = Vector3.up * 2;
+            allConnection[i].gameObject.SetActive(true);
+            allConnection[i].transform.position = Cells[i].transform.position + Vector3.up;
 
-
-            allConnection[i].SetActive(true);
-            allConnection[i].transform.position = cells[i].transform.position + Vector3.up;
+            if (Cells[i].cell_SO.cellTypes == checkBuffCellType)
+            {
+                allTexts[i].SetBuffData("+10%", Cells[i].gameObject);
+                allConnection[i].SetBuffData();
+            }
+            if (Cells[i].cell_SO.cellTypes == checkDebuffCellType)
+            {
+                allTexts[i].SetDebuffData("-10%", Cells[i].gameObject);
+                allConnection[i].SetDebuffData();
+            }
         }
     }
     public void MoveAnimPlay()

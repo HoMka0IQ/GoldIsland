@@ -5368,8 +5368,11 @@ MonoBehaviour:
   checkLayer:
     serializedVersion: 2
     m_Bits: 256
+  colliders:
+  - {fileID: 0}
+  - {fileID: 0}
   checkBuffCellType: 3
-  checkDebuffCellType: 0
+  checkDebuffCellType: 2
   bonusTextParent: {fileID: 4457669494998944105}
   bonusTextPrefab: {fileID: 3065602938361259249, guid: e48cdad2dd3450d4fafcb45e47156894,
     type: 3}

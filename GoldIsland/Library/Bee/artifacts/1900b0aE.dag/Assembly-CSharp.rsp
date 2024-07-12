@@ -381,8 +381,10 @@
 "Assets/SO/BuildCell_So.cs"
 "Assets/SO/CellData_SO.cs"
 "Assets/SO/Cell_SO.cs"
+"Assets/TextCellData.cs"
 "Assets/TouchChecker.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
+"Assets/ZoneCellData.cs"
 -langversion:9.0
 
 /deterministic

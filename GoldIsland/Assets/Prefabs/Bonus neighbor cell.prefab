@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8142274899072512026}
   - component: {fileID: 7938019071260799805}
+  - component: {fileID: 5020747813534549830}
   m_Layer: 0
   m_Name: Bonus neighbor cell
   m_TagString: Untagged
@@ -126,7 +127,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveFromCenter: {x: 0, y: 0, z: 0}
+  moveFromCenter: {x: 0, y: 2, z: 0}
+--- !u!114 &5020747813534549830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065602938361259249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b74eb4ef4b0ca64aa5b399b5068d0b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 187576634597150204}
+  textBuffColor: {r: 1, g: 0.8235294, b: 0.07058824, a: 1}
+  textDebuffColor: {r: 1, g: 0.05490196, b: 0.07058824, a: 1}
+  connectionScreenToWorld: {fileID: 7938019071260799805}
 --- !u!1 &6898565340932506342
 GameObject:
   m_ObjectHideFlags: 0
