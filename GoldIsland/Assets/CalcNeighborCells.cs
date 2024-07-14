@@ -68,6 +68,7 @@ public class CalcNeighborCells : MonoBehaviour
                 }
             }
         }
+        //c
         return pos;
     }
     public void CalcNeighborCell()
