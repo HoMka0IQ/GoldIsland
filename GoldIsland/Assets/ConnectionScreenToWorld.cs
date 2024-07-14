@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ConnectionScreenToWorld : MonoBehaviour
 {
-    public GameObject target;
+    public Vector3 targetPos = new Vector3();
     public Vector3 moveFromCenter;
     Camera cam;
     void Start()
@@ -13,13 +13,6 @@ public class ConnectionScreenToWorld : MonoBehaviour
     }
     void Update()
     {
-        if (target != null)
-        {
-            transform.position = cam.WorldToScreenPoint(target.transform.position + moveFromCenter);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+        transform.position = cam.WorldToScreenPoint(targetPos + moveFromCenter);
     }
 }

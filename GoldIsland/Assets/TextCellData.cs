@@ -12,16 +12,16 @@ public class TextCellData : MonoBehaviour
     [SerializeField] Color textDebuffColor;
 
     [SerializeField] ConnectionScreenToWorld connectionScreenToWorld;
-    public void SetBuffData(string text, GameObject target)
+    public void SetBuffData(string text, Vector3 targetPos)
     {
         this.text.text = text;
         this.text.color = textBuffColor;
-        connectionScreenToWorld.target = target;
+        connectionScreenToWorld.targetPos = targetPos;
     }
-    public void SetDebuffData(string text, GameObject target)
+    public void SetDebuffData(string text, Vector3 targetPos)
     {
         this.text.text = text;
         this.text.color = textDebuffColor;
-        connectionScreenToWorld.target = target;
+        connectionScreenToWorld.targetPos = targetPos;
     }
 }
