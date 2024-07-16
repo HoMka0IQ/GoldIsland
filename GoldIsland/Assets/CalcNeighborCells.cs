@@ -23,10 +23,12 @@ public class CalcNeighborCells : MonoBehaviour
     [Header("Buff")]
     [SerializeField] Cell_SO.CellType checkBuffCellType;
     public int buffCellCount;
+    List<Vector3> allBuffPos;
 
     [Header("Debuff")]
     [SerializeField] Cell_SO.CellType checkDebuffCellType;
     public int debuffCellCount;
+    List<Vector3> allDebuffPos;
 
     [Header("Buff Text")]
     [SerializeField] GameObject bonusTextParent;
@@ -48,7 +50,7 @@ public class CalcNeighborCells : MonoBehaviour
         cam = Camera.main;
 
     }
-    public List<Vector3> FindAllCellType(List<Cell> cells, Collider[] colliders, Cell_SO.CellType findType)
+    List<Vector3> FindCellType(List<Cell> cells, Collider[] colliders, Cell_SO.CellType findType)
     {
         List<Vector3> pos = new List<Vector3>();
         for (int i = 0; i < cells.Count; i++)
@@ -69,12 +71,11 @@ public class CalcNeighborCells : MonoBehaviour
                 }
             }
         }
-        //c
         return pos;
     }
-    public void CalcNeighborCell()
+    Collider[] FindAllColliders()
     {
-        colliders = new Collider[0];
+        Collider[] colliders = new Collider[0];
         for (int i = 0; i < allCheckPos.Length; i++)
         {
             Vector3 position = allCheckPos[i] + transform.position + Vector3.up * (Vector3.one.y / 2);
@@ -87,9 +88,11 @@ public class CalcNeighborCells : MonoBehaviour
             {
                 colliders = colliders.Concat(new Collider[1]).ToArray();
             }
-            
-
         }
+        return colliders;
+    }
+    List<Cell> CellsFromColliders(Collider[] colliders)
+    {
         List<Cell> Cells = new List<Cell>();
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -102,16 +105,27 @@ public class CalcNeighborCells : MonoBehaviour
                     Cells.Add(cell);
                 }
             }
-            
         }
-        for (int i = 0; i < allTexts.Count; i++)
-        {
-            allTexts[i].gameObject.SetActive(false);
-            allZoneCell[i].gameObject.SetActive(false);
-        }
+        return Cells;
+    }    
+    public void CalcNeighborCell()
+    {
+        colliders = FindAllColliders();
 
-        List<Vector3> allBuffPos = FindAllCellType(Cells, colliders, checkBuffCellType);
+        List<Cell> Cells = CellsFromColliders(colliders);
+
+        allBuffPos = FindCellType(Cells, colliders, checkBuffCellType);
         buffCellCount = allBuffPos.Count;
+       
+        allDebuffPos = FindCellType(Cells, colliders, checkDebuffCellType);
+        debuffCellCount = allDebuffPos.Count;
+       
+    }
+    public void ShowZones()
+    {
+        CalcNeighborCell();
+        HideZones();
+
         for (int i = 0; i < allBuffPos.Count; i++)
         {
             ZoneCellData zoneCell = GetZone();
@@ -123,8 +137,6 @@ public class CalcNeighborCells : MonoBehaviour
 
         }
 
-        List<Vector3> allDebuffPos = FindAllCellType(Cells, colliders, checkDebuffCellType);
-        debuffCellCount = allDebuffPos.Count;
         for (int i = 0; i < allDebuffPos.Count; i++)
         {
             ZoneCellData zoneCell = GetZone();
@@ -136,8 +148,15 @@ public class CalcNeighborCells : MonoBehaviour
 
         }
     }
-   
-    public ZoneCellData GetZone()
+    public void HideZones()
+    {
+        for (int i = 0; i < allTexts.Count; i++)
+        {
+            allTexts[i].gameObject.SetActive(false);
+            allZoneCell[i].gameObject.SetActive(false);
+        }
+    }
+    ZoneCellData GetZone()
     {
         for (int i = 0; i < allZoneCell.Count; i++)
         {
@@ -150,7 +169,7 @@ public class CalcNeighborCells : MonoBehaviour
         allZoneCell.Add(Instantiate(bonusZonePrefab, bonusZoneParent.transform).GetComponent<ZoneCellData>());
         return allZoneCell.Last();
     }
-    public TextCellData GetText()
+    TextCellData GetText()
     {
         for (int i = 0; i < allTexts.Count; i++)
         {

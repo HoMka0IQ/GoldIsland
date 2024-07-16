@@ -75,7 +75,7 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
                     prebuildGO.SetActive(true);
                     prebuildGO.transform.position = hit.collider.gameObject.transform.position;
                     calcNeighborCells.MoveAnimPlay();
-                    calcNeighborCells.CalcNeighborCell();
+                    calcNeighborCells.ShowZones();
                     lastPos = hit.collider.gameObject.transform.position;
                 }
                 return;
