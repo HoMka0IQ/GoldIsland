@@ -22,19 +22,20 @@ public class CalcNeighborCells : MonoBehaviour
     [Space(15f)]
     [Header("Buff")]
     [SerializeField] Cell_SO.CellType checkBuffCellType;
+    public int buffCellCount;
 
     [Header("Debuff")]
     [SerializeField] Cell_SO.CellType checkDebuffCellType;
+    public int debuffCellCount;
 
     [Header("Buff Text")]
     [SerializeField] GameObject bonusTextParent;
     [SerializeField] GameObject bonusTextPrefab;
-    [SerializeField] List<TextCellData> allTexts = new List<TextCellData>();
-
+    List<TextCellData> allTexts = new List<TextCellData>();
     [Header("Buff Zone")]
     [SerializeField] GameObject bonusZoneParent;
     [SerializeField] GameObject bonusZonePrefab;
-    [SerializeField] List<ZoneCellData> allZoneCell = new List<ZoneCellData>();
+    List<ZoneCellData> allZoneCell = new List<ZoneCellData>();
 
 
     [Space(15f)]
@@ -110,6 +111,7 @@ public class CalcNeighborCells : MonoBehaviour
         }
 
         List<Vector3> allBuffPos = FindAllCellType(Cells, colliders, checkBuffCellType);
+        buffCellCount = allBuffPos.Count;
         for (int i = 0; i < allBuffPos.Count; i++)
         {
             ZoneCellData zoneCell = GetZone();
@@ -122,6 +124,7 @@ public class CalcNeighborCells : MonoBehaviour
         }
 
         List<Vector3> allDebuffPos = FindAllCellType(Cells, colliders, checkDebuffCellType);
+        debuffCellCount = allDebuffPos.Count;
         for (int i = 0; i < allDebuffPos.Count; i++)
         {
             ZoneCellData zoneCell = GetZone();
@@ -133,7 +136,7 @@ public class CalcNeighborCells : MonoBehaviour
 
         }
     }
-
+   
     public ZoneCellData GetZone()
     {
         for (int i = 0; i < allZoneCell.Count; i++)

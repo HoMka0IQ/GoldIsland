@@ -5468,17 +5468,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca3c2430ad2a8f47966b83436e7d554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkBoxSize: {x: 4, y: 1, z: 4}
   checkLayer:
     serializedVersion: 2
     m_Bits: 256
-  checkCellType: 2
+  colliders: []
+  checkBuffCellType: 2
+  checkDebuffCellType: 0
   bonusTextParent: {fileID: 752412659945748207}
   bonusTextPrefab: {fileID: 3065602938361259249, guid: e48cdad2dd3450d4fafcb45e47156894,
     type: 3}
+  allTexts: []
   bonusZoneParent: {fileID: 5756875516455115457}
   bonusZonePrefab: {fileID: 5764242185160438446, guid: 36d74403334933741a6e036505a2d178,
     type: 3}
+  allZoneCell: []
   anim: {fileID: 1990273014331418751}
 --- !u!114 &683180820837354066
 MonoBehaviour:

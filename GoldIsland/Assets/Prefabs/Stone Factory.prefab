@@ -5092,6 +5092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5566255309135725615}
   - component: {fileID: 2754896818210231327}
+  - component: {fileID: 7537694477996999795}
   - component: {fileID: 4382776635882250574}
   - component: {fileID: 7455547287065021818}
   - component: {fileID: 1761506117592909974}
@@ -5136,6 +5137,21 @@ MonoBehaviour:
   islandData: {fileID: 0}
   posInArray: 0
   showingAnim: {fileID: 7455547287065021818}
+--- !u!114 &7537694477996999795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8740443217677003018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1303e430ff240a747ae7156f7a377805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultCollectCoin: 5
+  "\u0441ollectCoinFromCell": 5
+  neighborCells: {fileID: 4382776635882250574}
 --- !u!114 &4382776635882250574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5148,17 +5164,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca3c2430ad2a8f47966b83436e7d554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkBoxSize: {x: 4, y: 1, z: 4}
   checkLayer:
     serializedVersion: 2
     m_Bits: 256
-  checkCellType: 3
+  colliders: []
+  checkBuffCellType: 3
+  checkDebuffCellType: 0
   bonusTextParent: {fileID: 5057503490633562534}
   bonusTextPrefab: {fileID: 3065602938361259249, guid: e48cdad2dd3450d4fafcb45e47156894,
     type: 3}
+  debuffCellCount: 0
   bonusZoneParent: {fileID: 97079438877839454}
   bonusZonePrefab: {fileID: 5764242185160438446, guid: 36d74403334933741a6e036505a2d178,
     type: 3}
+  buffCellCount: 0
   anim: {fileID: 7455547287065021818}
 --- !u!111 &7455547287065021818
 Animation:
