@@ -5096,7 +5096,7 @@ GameObject:
   - component: {fileID: 4382776635882250574}
   - component: {fileID: 7455547287065021818}
   - component: {fileID: 1761506117592909974}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stone Factory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5133,7 +5133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999ea927f197dd848a11769dbaaf2cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cell_SO: {fileID: 0}
+  cell_SO: {fileID: 11400000, guid: a7e2b23345752484eb56626529c7c657, type: 2}
   islandData: {fileID: 0}
   posInArray: 0
   showingAnim: {fileID: 7455547287065021818}
@@ -5169,15 +5169,15 @@ MonoBehaviour:
     m_Bits: 256
   colliders: []
   checkBuffCellType: 3
+  buffCellCount: 0
   checkDebuffCellType: 0
+  debuffCellCount: 0
   bonusTextParent: {fileID: 5057503490633562534}
   bonusTextPrefab: {fileID: 3065602938361259249, guid: e48cdad2dd3450d4fafcb45e47156894,
     type: 3}
-  debuffCellCount: 0
   bonusZoneParent: {fileID: 97079438877839454}
   bonusZonePrefab: {fileID: 5764242185160438446, guid: 36d74403334933741a6e036505a2d178,
     type: 3}
-  buffCellCount: 0
   anim: {fileID: 7455547287065021818}
 --- !u!111 &7455547287065021818
 Animation:
