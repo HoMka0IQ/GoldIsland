@@ -50,6 +50,10 @@ public class CalcNeighborCells : MonoBehaviour
         cam = Camera.main;
 
     }
+    public Collider[] GetColliders()
+    {
+        return colliders;
+    }
     List<Vector3> FindCellType(List<Cell> cells, Collider[] colliders, Cell_SO.CellType findType)
     {
         List<Vector3> pos = new List<Vector3>();

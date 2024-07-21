@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Windmill
   m_EditorClassIdentifier: 
   cellName: Windmill
-  cellPrefab: {fileID: 8508266261373955723, guid: 5c99395142cfab244bcecb2ce8323edb,
+  cellPrefab: {fileID: 8740443217677003018, guid: 0160c26f5a73a7a42ad7b0727d249960,
     type: 3}
   cellTypes: 4
   prebuildPrefab: {fileID: 8508266261373955723, guid: 5c99395142cfab244bcecb2ce8323edb,

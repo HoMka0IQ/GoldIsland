@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraMovement : MonoBehaviour, IDragHandler
+public class CameraMovement : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     public Vector3 startPos;
     [SerializeField] float speed;
@@ -20,6 +20,7 @@ public class CameraMovement : MonoBehaviour, IDragHandler
     [SerializeField] float increaseRangeZoneY;
     public static CameraMovement instance;
 
+    public bool drag;
 
     private void Awake()
     {
@@ -110,7 +111,11 @@ public class CameraMovement : MonoBehaviour, IDragHandler
         // Зворотне обчислення camPos з врахуванням нової позиції
         camPos.x = localPosition.x * cos + localPosition.z * sin;
         camPos.y = -localPosition.x * sin + localPosition.z * cos;
+        drag = true;
     }
 
-
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        drag = false;
+    }
 }

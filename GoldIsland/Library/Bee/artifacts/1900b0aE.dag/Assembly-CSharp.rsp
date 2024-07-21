@@ -376,6 +376,7 @@
 "Assets/GlobalData.cs"
 "Assets/IslandBuilding.cs"
 "Assets/IslandBuildZone.cs"
+"Assets/LocalTouchChecker.cs"
 "Assets/PreBuild.cs"
 "Assets/Scripts/Factory.cs"
 "Assets/Scripts/IslandData.cs"
@@ -386,6 +387,7 @@
 "Assets/TextCellData.cs"
 "Assets/TouchChecker.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
+"Assets/WindmillFactory.cs"
 "Assets/ZoneCellData.cs"
 -langversion:9.0
 
