@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ConnectionScreenToWorld : MonoBehaviour
 {
+    [SerializeField] GameObject targetGO;
     public Vector3 targetPos = new Vector3();
     public Vector3 moveFromCenter;
     Camera cam;
@@ -13,6 +14,19 @@ public class ConnectionScreenToWorld : MonoBehaviour
     }
     void Update()
     {
+        if (targetGO != null)
+        {
+            transform.position = cam.WorldToScreenPoint(targetGO.transform.position + moveFromCenter);
+            return;
+        }
         transform.position = cam.WorldToScreenPoint(targetPos + moveFromCenter);
+    }
+    public void setData(Vector3 pos)
+    {
+        targetPos = pos;
+    }
+    public void setData(GameObject go)
+    {
+        targetGO = go;
     }
 }

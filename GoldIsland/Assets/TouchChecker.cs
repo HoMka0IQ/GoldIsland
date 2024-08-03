@@ -6,55 +6,45 @@ using UnityEngine.UI;
 
 public class TouchChecker : MonoBehaviour
 {
-    public List<GraphicRaycaster> uiRaycaster;
-    public EventSystem eventSystem;
-    
+    private bool isTouching = false;
+    private Vector2 initialTouchPosition;
+
     public static TouchChecker instance;
     private void Awake()
     {
         instance = this;
     }
-    public int GetTouchCount()
+    private void Update()
     {
-        List<RaycastResult> results = new List<RaycastResult>();
-        if (Input.GetMouseButtonDown(0))
-        {
-            PointerEventData pointerData = new PointerEventData(eventSystem)
-            {
-                position = Input.mousePosition
-            };
-            
-            foreach (GraphicRaycaster raycaster in uiRaycaster)
-            {
-                List<RaycastResult> result = new List<RaycastResult>();
-                raycaster.Raycast(pointerData, result);
-                results.AddRange(result);
-            }
-
-            Debug.Log("Number of UI elements under mouse click: " + results.Count);
-
-            return results.Count;
-        }
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !EventSystem.current.IsPointerOverGameObject(0))
         {
             Touch touch = Input.GetTouch(0);
-            PointerEventData pointerData = new PointerEventData(eventSystem)
-            {
-                position = touch.position
-            };
 
-            foreach (GraphicRaycaster raycaster in uiRaycaster)
+            switch (touch.phase)
             {
-                List<RaycastResult> result = new List<RaycastResult>();
-                raycaster.Raycast(pointerData, result);
-                results.AddRange(result);
+                case TouchPhase.Began:
+                    initialTouchPosition = touch.position;
+
+                    isTouching = true;
+                    break;
+
+                case TouchPhase.Moved:
+                    isTouching = false;
+                    break;
             }
-
-            Debug.Log("Number of UI elements under touch: " + results.Count);
-
-            return results.Count;
         }
-        return results.Count;
+    }
+    public bool IsPointerOverUIObject(Touch touch)
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = new Vector2(touch.position.x, touch.position.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Count > 0;
+    }
+    public bool GetTrueTouch()
+    {
+        return isTouching;
     }
 
 }

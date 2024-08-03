@@ -8,6 +8,7 @@ public class PreBuild : MonoBehaviour
     [Header("Main")]
     [SerializeField] Cell_SO cell_SO;
     [SerializeField] LayerMask layerMask;
+    public GameObject goCellUnder;
     public BuildUI buildUI;
     [Header("UI")]
     [SerializeField] GameObject actionBtnsCenter;
@@ -30,16 +31,9 @@ public class PreBuild : MonoBehaviour
     }
     public void AcceptBtn()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down * 10, out hit, 100, layerMask))
-        {
-            Debug.Log(LayerMask.LayerToName(hit.transform.gameObject.layer));
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("EmptyCell"))
-            {
-                Cell cell = hit.transform.gameObject.GetComponent<Cell>();
-                cell.islandData.CellChanger(cell_SO, cell.posInArray);
-            }
-        }
+        Cell cell = goCellUnder.GetComponent<Cell>();
+        cell.islandData.CellChanger(cell_SO, cell.posInArray);
+        cell.islandData.RefreshBuildsDataExcept(cell.posInArray);
         gameObject.SetActive(false);
         buildUI.ResetUI();
     }

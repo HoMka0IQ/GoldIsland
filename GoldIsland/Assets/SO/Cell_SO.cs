@@ -9,7 +9,6 @@ public class Cell_SO : ScriptableObject
     public GameObject cellPrefab;
     public CellType cellTypes;
 
-
     public enum CellType
     {
         None,

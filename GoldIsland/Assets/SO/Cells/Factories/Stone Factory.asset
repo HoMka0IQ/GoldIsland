@@ -18,3 +18,4 @@ MonoBehaviour:
   cellTypes: 4
   prebuildPrefab: {fileID: 8508266261373955723, guid: f2a22f3dada07004e8f473ef6450a5e1,
     type: 3}
+  buildType: 2

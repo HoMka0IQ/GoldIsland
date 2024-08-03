@@ -500,6 +500,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Money_18
+      rect:
+        serializedVersion: 2
+        x: 2133
+        y: 473
+        width: 433
+        height: 297
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e110b5812ce74c449ece3863171408a
+      internalID: -1118829924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -521,6 +542,7 @@ TextureImporter:
       Money_15: -1767882086
       Money_16: -406592857
       Money_17: 65894890
+      Money_18: -1118829924
       Money_2: -1975360786
       Money_3: 1961322208
       Money_4: -303187747

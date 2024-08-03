@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraMovement : MonoBehaviour, IDragHandler, IEndDragHandler
+public class CameraMovement : MonoBehaviour
 {
     public Vector3 startPos;
     [SerializeField] float speed;
@@ -20,7 +20,9 @@ public class CameraMovement : MonoBehaviour, IDragHandler, IEndDragHandler
     [SerializeField] float increaseRangeZoneY;
     public static CameraMovement instance;
 
+    public bool canMove;
     public bool drag;
+    private Vector2 lastTouchPosition;
 
     private void Awake()
     {
@@ -71,51 +73,61 @@ public class CameraMovement : MonoBehaviour, IDragHandler, IEndDragHandler
         Debug.DrawLine(point3, point4, Color.blue);
         Debug.DrawLine(point4, point1, Color.blue);
     }
-    public void OnDrag(PointerEventData eventData)
+
+    private void Update()
     {
-        // Обрахування зміщення
-        camPos.x += eventData.delta.y / speed;
-        camPos.y -= eventData.delta.x / speed;
 
-        // Обрахування нової позиції з врахуванням обертання
-        float angleRad = rotationAngle * Mathf.Deg2Rad;
-        float cos = Mathf.Cos(angleRad);
-        float sin = Mathf.Sin(angleRad);
 
-        float newX = camPos.x * cos - camPos.y * sin;
-        float newZ = camPos.x * sin + camPos.y * cos;
-
-        // Обмеження camPos за локальними осями
-        if (newX > xBorder.x)
+        if (Input.touchCount > 0)
         {
-            newX = xBorder.x;
-        }
-        if (newX < xBorder.y)
-        {
-            newX = xBorder.y;
-        }
+            Touch touch = Input.GetTouch(0);
 
-        if (newZ > zBorder.x)
-        {
-            newZ = zBorder.x;
+            if (touch.phase == TouchPhase.Began)
+            {
+                // Початок перетягування
+                lastTouchPosition = touch.position;
+                if (!EventSystem.current.IsPointerOverGameObject(0))
+                {
+                    canMove = true;
+                }
+            }
+            else if (touch.phase == TouchPhase.Moved && canMove)
+            {
+                drag = true;
+                // Рух перетягування
+                Vector2 deltaPosition = touch.position - lastTouchPosition;
+                camPos.x += deltaPosition.y / speed;
+                camPos.y -= deltaPosition.x / speed;
+
+                // Обрахування нової позиції з врахуванням обертання
+                float angleRad = rotationAngle * Mathf.Deg2Rad;
+                float cos = Mathf.Cos(angleRad);
+                float sin = Mathf.Sin(angleRad);
+
+                float newX = camPos.x * cos - camPos.y * sin;
+                float newZ = camPos.x * sin + camPos.y * cos;
+
+                // Обмеження camPos за локальними осями
+                newX = Mathf.Clamp(newX, xBorder.y, xBorder.x);
+                newZ = Mathf.Clamp(newZ, zBorder.y, zBorder.x);
+
+                // Застосування нової позиції
+                Vector3 localPosition = new Vector3(newX, cameraGO.transform.position.y, newZ);
+                cameraGO.transform.localPosition = localPosition;
+
+                // Зворотне обчислення camPos з врахуванням нової позиції
+                camPos.x = localPosition.x * cos + localPosition.z * sin;
+                camPos.y = -localPosition.x * sin + localPosition.z * cos;
+
+                // Оновлення останньої позиції торкання
+                lastTouchPosition = touch.position;
+            }
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                // Завершення перетягування
+                canMove = false;
+                drag = false;
+            }
         }
-        if (newZ < zBorder.y)
-        {
-            newZ = zBorder.y;
-        }
-
-        // Застосування нової позиції
-        Vector3 localPosition = new Vector3(newX, cameraGO.transform.position.y, newZ);
-        cameraGO.transform.localPosition = localPosition;
-
-        // Зворотне обчислення camPos з врахуванням нової позиції
-        camPos.x = localPosition.x * cos + localPosition.z * sin;
-        camPos.y = -localPosition.x * sin + localPosition.z * cos;
-        drag = true;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        drag = false;
     }
 }

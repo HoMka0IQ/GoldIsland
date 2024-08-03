@@ -6,4 +6,11 @@ using UnityEngine;
 public class BuildCell_So : Cell_SO
 {
     public GameObject prebuildPrefab;
+    public BuildType buildType;
+    public enum BuildType
+    {
+        None,
+        Building,
+        Factory
+    }
 }

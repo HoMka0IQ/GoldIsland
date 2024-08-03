@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-public class CalcNeighborCells : MonoBehaviour
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
+public class CalcNeighborCells : MonoBehaviour, IBuildInteractonZone
 {
     [Header("Check Zone")]
     [SerializeField] LayerMask checkLayer;
@@ -30,20 +32,12 @@ public class CalcNeighborCells : MonoBehaviour
     public int debuffCellCount;
     List<Vector3> allDebuffPos;
 
-    [Header("Buff Text")]
-    [SerializeField] GameObject bonusTextParent;
-    [SerializeField] GameObject bonusTextPrefab;
-    List<TextCellData> allTexts = new List<TextCellData>();
-    [Header("Buff Zone")]
-    [SerializeField] GameObject bonusZoneParent;
-    [SerializeField] GameObject bonusZonePrefab;
-    List<ZoneCellData> allZoneCell = new List<ZoneCellData>();
-
 
     [Space(15f)]
     [Header("Other")]
     [SerializeField] Animation anim;
     Camera cam;
+    public bool zonesIsOn;
 
     private void Start()
     {
@@ -111,7 +105,8 @@ public class CalcNeighborCells : MonoBehaviour
             }
         }
         return Cells;
-    }    
+    }
+
     public void CalcNeighborCell()
     {
         colliders = FindAllColliders();
@@ -128,64 +123,24 @@ public class CalcNeighborCells : MonoBehaviour
     public void ShowZones()
     {
         CalcNeighborCell();
-        HideZones();
+        zonesIsOn = true;
+        BuildZonesManager.instance.ShowZones(allBuffPos, allDebuffPos, gameObject);
 
-        for (int i = 0; i < allBuffPos.Count; i++)
-        {
-            ZoneCellData zoneCell = GetZone();
-            zoneCell.SetBuffData();
-            zoneCell.gameObject.transform.position = allBuffPos[i] + Vector3.up;
-
-            TextCellData textCell = GetText();
-            textCell.SetBuffData("+10%", allBuffPos[i] + Vector3.up);
-
-        }
-
-        for (int i = 0; i < allDebuffPos.Count; i++)
-        {
-            ZoneCellData zoneCell = GetZone();
-            zoneCell.SetDebuffData();
-            zoneCell.gameObject.transform.position = allDebuffPos[i] + Vector3.up;
-
-            TextCellData textCell = GetText();
-            textCell.SetDebuffData("-10%", allDebuffPos[i] + Vector3.up);
-
-        }
     }
     public void HideZones()
     {
-        for (int i = 0; i < allTexts.Count; i++)
-        {
-            allTexts[i].gameObject.SetActive(false);
-            allZoneCell[i].gameObject.SetActive(false);
-        }
+
+        BuildZonesManager.instance.HideAllZones();
+        zonesIsOn = false;
     }
-    ZoneCellData GetZone()
+    private void OnDisable()
     {
-        for (int i = 0; i < allZoneCell.Count; i++)
+        if (BuildZonesManager.instance != null)
         {
-            if (allZoneCell[i].gameObject.activeSelf == false)
-            {
-                allZoneCell[i].gameObject.SetActive(true);
-                return allZoneCell[i];
-            }
+            BuildZonesManager.instance.HideAllZones();
         }
-        allZoneCell.Add(Instantiate(bonusZonePrefab, bonusZoneParent.transform).GetComponent<ZoneCellData>());
-        return allZoneCell.Last();
     }
-    TextCellData GetText()
-    {
-        for (int i = 0; i < allTexts.Count; i++)
-        {
-            if (allTexts[i].gameObject.activeSelf == false)
-            {
-                allTexts[i].gameObject.SetActive(true);
-                return allTexts[i];
-            }
-        }
-        allTexts.Add(Instantiate(bonusTextPrefab, bonusTextParent.transform).GetComponent<TextCellData>());
-        return allTexts.Last();
-    }
+   
     public void MoveAnimPlay()
     {
         anim.Play();
@@ -199,5 +154,11 @@ public class CalcNeighborCells : MonoBehaviour
             Gizmos.DrawCube(position, Vector3.one);
         }
 
+    }
+
+    public void ShowZone()
+    {
+        MoveAnimPlay();
+        ShowZones();
     }
 }

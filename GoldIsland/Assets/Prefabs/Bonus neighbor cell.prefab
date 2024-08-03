@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8142274899072512026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -126,7 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9637c5b47dd7ddc4ea562fd49f9c95de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  targetGO: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
   moveFromCenter: {x: 0, y: 2, z: 0}
 --- !u!114 &5020747813534549830
 MonoBehaviour:
@@ -141,9 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 187576634597150204}
-  textBuffColor: {r: 1, g: 0.8235294, b: 0.07058824, a: 1}
-  textDebuffColor: {r: 1, g: 0.05490196, b: 0.07058824, a: 1}
-  connectionScreenToWorld: {fileID: 7938019071260799805}
 --- !u!1 &6898565340932506342
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

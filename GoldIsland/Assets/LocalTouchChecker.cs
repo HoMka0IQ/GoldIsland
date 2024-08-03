@@ -12,13 +12,11 @@ public class LocalTouchChecker : MonoBehaviour
     [SerializeField] EventSystem eventSystem;
 
     [SerializeField] int currentTouches;
-
-    [SerializeField] UnityEvent ifZeroTouch;
     private void Start()
     {
         eventSystem = FindObjectOfType<EventSystem>();
     }
-    void Update()
+    public int CheckTouches()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -30,9 +28,8 @@ public class LocalTouchChecker : MonoBehaviour
             List<RaycastResult> result = new List<RaycastResult>();
             uiRaycaster.Raycast(pointerData, result);
 
-            Debug.Log("Number of UI elements under mouse click: " + result.Count);
+            Debug.Log("Number of UI elements under mouse click s: " + result.Count);
             currentTouches = result.Count;
-            invokeEvent();
         }
         if (Input.touchCount > 0)
         {
@@ -45,17 +42,9 @@ public class LocalTouchChecker : MonoBehaviour
             List<RaycastResult> result = new List<RaycastResult>();
             uiRaycaster.Raycast(pointerData, result);
 
-            Debug.Log("Number of UI elements under touch: " + result.Count);
+            Debug.Log("Number of UI elements under touch s: " + result.Count);
             currentTouches = result.Count;
-            invokeEvent();
         }
-
-    }
-    public void invokeEvent()
-    {
-        if (currentTouches == 0 && ifZeroTouch != null && CameraMovement.instance.drag == false)
-        {
-            ifZeroTouch.Invoke();
-        }
+        return currentTouches;
     }
 }

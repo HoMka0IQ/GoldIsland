@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
+public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler,IBeginDragHandler
 {
 
     [Header("Ray")]
@@ -13,8 +14,9 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
 
     [Header("Build")]
     [SerializeField] BuildCell_So buildCell_SO;
-    GameObject prebuildGO;
-    CalcNeighborCells calcNeighborCells;
+    [HideInInspector]
+    public GameObject prebuildGO;
+    IBuildInteractonZone buildChecker;
     PreBuild preBuild;
     Vector3 lastPos;
     [SerializeField] Transform prebuildParent;
@@ -26,7 +28,8 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         mainCamera = Camera.main;
         prebuildGO = Instantiate(buildCell_SO.prebuildPrefab, prebuildParent);
-        calcNeighborCells = prebuildGO.GetComponent<CalcNeighborCells>();
+        BuildMode.instance.addPreBuild(this);
+        buildChecker = prebuildGO.GetComponent<IBuildInteractonZone>();
         preBuild = prebuildGO.GetComponent<PreBuild>();
         preBuild.buildUI = this;
         prebuildGO.SetActive(false);
@@ -49,13 +52,16 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             transform.position = mainCamera.WorldToScreenPoint(prebuildGO.transform.position);
         }
-        
+
     }
 
-
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        BuildMode.instance.CloseAllPreBuild();
+        BuildMode.instance.ShowBuildZones(LayerMask.LayerToName(Mathf.RoundToInt(Mathf.Log(layer.value, 2))));
+    }
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Drag");
         dragging = true;
         preBuild.HideActionBtns();
         transform.position = eventData.position;
@@ -64,18 +70,19 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
         Color color = image.color;
         color.a = 0;
         image.color = color;
+
         if (Physics.Raycast(ray, out hit, 55f, layer))
         {
             Debug.DrawRay(ray.origin, ray.direction * 55f, Color.cyan);
 
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("EmptyCell"))
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer(LayerMask.LayerToName(Mathf.RoundToInt(Mathf.Log(layer.value, 2)))))
             {
                 if (lastPos != hit.collider.gameObject.transform.position || prebuildGO.activeSelf == false)
                 {
+                    preBuild.goCellUnder = hit.collider.gameObject;
                     prebuildGO.SetActive(true);
                     prebuildGO.transform.position = hit.collider.gameObject.transform.position;
-                    calcNeighborCells.MoveAnimPlay();
-                    calcNeighborCells.ShowZones();
+                    buildChecker.ShowZone();
                     lastPos = hit.collider.gameObject.transform.position;
                 }
                 return;
@@ -93,6 +100,7 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             ResetUI();
         }
+        
     }
     public void ResetUI()
     {
@@ -100,5 +108,8 @@ public class BuildUI : MonoBehaviour, IDragHandler, IEndDragHandler
         Color color = image.color;
         color.a = 1;
         image.color = color;
+        BuildMode.instance.HideBuildZones(LayerMask.LayerToName(Mathf.RoundToInt(Mathf.Log(layer.value, 2))));
     }
+
+
 }

@@ -23,6 +23,10 @@ public class IslandBuilding : MonoBehaviour
     {
         buildZoneParent.SetActive(false);
         CheckBuildZone();
+        for (int i = 0; i < islands.Count; i++)
+        {
+            islands[i].SetPosInArray(i);
+        }
     }
     public List<IslandData> GetIslands()
     {
@@ -31,6 +35,7 @@ public class IslandBuilding : MonoBehaviour
     public void AddIsland(IslandData island)
     {
         islands.Add(island);
+        island.SetPosInArray(islands.Count - 1);
         CheckBuildZone();
     }
     public void CheckBuildZone()
@@ -52,7 +57,6 @@ public class IslandBuilding : MonoBehaviour
         }
         foreach (IslandData island in islands)
         {
-            Debug.Log("here");
             CheckSide(island.transform, island.transform.right * 10);
             CheckSide(island.transform, -island.transform.right * 10);
             CheckSide(island.transform, island.transform.forward * 10);

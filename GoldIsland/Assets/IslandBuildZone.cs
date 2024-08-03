@@ -6,9 +6,9 @@ using System.Collections.Generic;
 public class IslandBuildZone : MonoBehaviour
 {
     public GameObject islandPrefab;
-    private void OnMouseDown()
+    private void OnMouseUp()
     {
-        if (TouchChecker.instance.GetTouchCount() == 1)
+        if (!EventSystem.current.IsPointerOverGameObject(0))
         {
             GameObject island = Instantiate(islandPrefab, transform.position, Quaternion.identity);
             island.transform.SetParent(IslandBuilding.Instance.gameObject.transform);

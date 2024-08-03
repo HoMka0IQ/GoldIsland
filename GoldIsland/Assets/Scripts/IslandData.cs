@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IslandData : MonoBehaviour
@@ -10,10 +11,14 @@ public class IslandData : MonoBehaviour
     [SerializeField] GameObject[] allCells = new GameObject[16];
     [Range(0,100)]
     [SerializeField] float emptyCellChance;
-    
+    public int islandPosInArray { get; private set; }
     void Start()
     {
         GenerateCellsOnIsland();
+    }
+    public void SetPosInArray(int id)
+    {
+        islandPosInArray = id;
     }
     public Cell_SO[] GetCells()
     {
@@ -22,6 +27,16 @@ public class IslandData : MonoBehaviour
     public GameObject[] GetGOCells()
     {
         return allCells;
+    }
+    public void RefreshBuildsDataExcept(int id)
+    {
+        for (int i = 0; i < cellOnIsland.Length; i++)
+        {
+            if (cellOnIsland[i].cellTypes == Cell_SO.CellType.Building && i != id)
+            {
+                allCells[i].GetComponent<IDataRefreshable>().RefreshData();
+            }
+        }
     }
     public void CellChanger(Cell_SO cell, int id)
     {
